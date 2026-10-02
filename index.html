@@ -1,9 +1,9 @@
- <!doctype html>
+<!doctype html>
 <html lang="fr" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0c0d0f">
+<meta name="theme-color" content="#000">
 <meta name="description" content="Nouvura — Studio créatif : design graphique, motion design, vidéo, web, UI/UX, impression, découpe laser/CNC et communication visuelle.">
 <title>NOUVURA — Creative Studio</title>
 <link rel="icon" href="logo.png">
@@ -12,284 +12,224 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#0c0d0f; --ink2:#131518; --line:rgba(239,236,228,.14); --line2:rgba(239,236,228,.07);
-  --paper:#efece4; --mute:#9a9a94; --signal:#ffc800; --flame:#ff6a1a; --red:#f0391f;
+  --black:#000; --ink:#0b0b0c; --card:#121214; --paper:#f4f1ea; --mute:#a6a49c;
+  --yellow:#ffc800; --red:#e8321e; --line:rgba(244,241,234,.14);
   --display:"Archivo","IBM Plex Sans Arabic",sans-serif; --body:"Manrope","IBM Plex Sans Arabic",sans-serif;
-  --ease:cubic-bezier(.2,.8,.2,1); --pad:clamp(20px,4vw,56px);
+  --ease:cubic-bezier(.2,.8,.2,1); --pad:clamp(18px,4vw,56px);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:84px;background:var(--ink)}
-body{background:var(--ink);color:var(--paper);font-family:var(--body);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+html{background:var(--black);scroll-behavior:smooth}
+body{background:var(--black);color:var(--paper);font-family:var(--body);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html[lang=ar] body{line-height:1.9}
 a{color:inherit;text-decoration:none}
-:focus-visible{outline:2px solid var(--signal);outline-offset:3px}
-.wrap{width:min(1240px,100% - 2*var(--pad));margin-inline:auto}
+:focus-visible{outline:2px solid var(--yellow);outline-offset:3px}
+.wrap{width:min(1200px,100% - 2*var(--pad));margin-inline:auto}
 
-/* blueprint grid backdrop */
-body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
-  background-image:linear-gradient(var(--line2) 1px,transparent 1px),linear-gradient(90deg,var(--line2) 1px,transparent 1px);
-  background-size:80px 80px;mask-image:linear-gradient(#000 0,transparent 75%)}
+/* cinematic lighting */
+.light{position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(60vmax 40vmax at 50% -10%,rgba(255,200,0,.16),transparent 60%),
+             radial-gradient(50vmax 40vmax at 100% 60%,rgba(232,50,30,.12),transparent 60%),
+             radial-gradient(40vmax 30vmax at 0% 90%,rgba(255,200,0,.06),transparent 60%)}
 
-/* header */
-header{position:fixed;inset:0 0 auto 0;z-index:50;background:rgba(12,13,15,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line2);transition:border-color .3s}
-header.scrolled{border-color:var(--line)}
-.nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.brand{display:flex;align-items:center;gap:12px;font-family:var(--display);font-weight:800;letter-spacing:.14em;font-size:15px}
-.brand img{height:36px;width:auto;display:block}
-.mark{display:none;width:34px;height:34px;border:1.5px solid var(--signal);position:relative}
-.mark:after{content:"";position:absolute;inset:8px;background:var(--signal);transform:rotate(45deg)}
-.no-logo .mark{display:block}.no-logo .brand img{display:none}
-.links{display:flex;gap:34px;font-size:13px;font-weight:600;color:var(--mute)}
-.links a{transition:color .2s}.links a:hover{color:var(--signal)}
-.tools{display:flex;align-items:center;gap:12px}
-.lang{display:flex;border:1px solid var(--line);padding:3px;gap:2px}
-.lang button{border:0;background:none;color:var(--mute);font:700 11px var(--body);padding:6px 10px;cursor:pointer;letter-spacing:.06em}
-.lang button.on{background:var(--signal);color:#000}
-.lang button:hover:not(.on){color:var(--paper)}
+/* language */
+.lang{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));inset-inline-end:var(--pad);z-index:20;display:flex;gap:2px;padding:3px;border:1px solid var(--line);background:rgba(0,0,0,.6);backdrop-filter:blur(10px);border-radius:999px}
+.lang button{border:0;background:none;color:var(--mute);font:700 12px var(--body);padding:8px 13px;border-radius:999px;cursor:pointer;min-height:36px}
+.lang button.on{background:var(--yellow);color:#000}
+
+/* reveal */
+.rv{opacity:0;transform:translate3d(0,40px,0) rotateX(12deg);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:var(--d,0s)}
+.rv.in{opacity:1;transform:none}
 
 /* hero */
-.hero{min-height:100svh;padding:140px 0 72px;display:flex;align-items:center;position:relative}
-.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,5vw,80px);align-items:center}
-.tag{display:inline-flex;align-items:center;gap:12px;font-size:13px;font-weight:600;color:var(--signal);margin-bottom:28px}
-.tag:before{content:"";width:40px;height:1px;background:var(--signal)}
-h1{font-family:var(--display);font-weight:900;font-size:clamp(56px,9.4vw,140px);line-height:.88;letter-spacing:-.045em;text-transform:uppercase}
-html[lang=ar] h1{letter-spacing:0;line-height:1.05;font-size:clamp(52px,8vw,110px);text-transform:none}
-h1 span{display:block;background:linear-gradient(100deg,var(--signal),var(--flame) 55%,var(--red));-webkit-background-clip:text;background-clip:text;color:transparent}
-.lead{max-width:520px;margin-top:32px;color:#b4b2aa;font-size:17px}
-.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:38px}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:16px 26px;font-weight:700;font-size:14px;border:1px solid var(--line);transition:background .25s,color .25s,border-color .25s,transform .25s var(--ease)}
-.btn:hover{transform:translateY(-3px);border-color:var(--paper)}
-.btn.fill{background:var(--signal);border-color:var(--signal);color:#000}
-.btn.fill:hover{background:var(--paper);border-color:var(--paper)}
-.arrow{display:inline-block;transition:transform .25s}.btn:hover .arrow{transform:translateY(3px)}
-html[dir=rtl] .ext{transform:scaleX(-1)}
+.hero{min-height:100svh;display:grid;place-items:center;text-align:center;padding:110px 0 80px;perspective:1200px}
+.stage{position:relative;width:min(340px,70vw);aspect-ratio:1;margin:0 auto 36px;transform-style:preserve-3d;transition:transform .25s var(--ease)}
+.ring{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(255,200,0,.35)}
+.ring.r1{transform:translateZ(-60px) scale(1.18);border-style:dashed;animation:spin 50s linear infinite}
+.ring.r2{transform:translateZ(-30px) scale(1.06);border-color:rgba(232,50,30,.55)}
+.glow{position:absolute;inset:12%;border-radius:50%;background:radial-gradient(circle,rgba(255,200,0,.35),transparent 70%);filter:blur(30px);transform:translateZ(-80px)}
+.stage img{position:absolute;inset:8%;width:84%;height:84%;object-fit:contain;transform:translateZ(60px);filter:drop-shadow(0 30px 40px rgba(0,0,0,.7));animation:float 6s ease-in-out infinite,logoin 1.6s var(--ease) both}
+@keyframes spin{to{transform:translateZ(-60px) scale(1.18) rotate(360deg)}}
+@keyframes float{50%{translate:0 -12px}}
+@keyframes logoin{from{opacity:0;scale:.6;filter:blur(18px)}to{opacity:1;scale:1}}
+h1{font-family:var(--display);font-weight:900;font-size:clamp(56px,13vw,150px);line-height:.95;letter-spacing:-.04em;text-transform:uppercase;
+  background:linear-gradient(100deg,var(--yellow) 20%,var(--red));-webkit-background-clip:text;background-clip:text;color:transparent;
+  clip-path:inset(0 0 100% 0);animation:wipe 1.2s .5s var(--ease) forwards}
+@keyframes wipe{to{clip-path:inset(-10% 0 -10% 0)}}
+html[lang=ar] h1{text-transform:none;letter-spacing:0;line-height:1.2}
+.eyebrow{margin-top:28px;font-size:14px;font-weight:700;color:var(--yellow)}
+.lead{max-width:560px;margin:14px auto 0;color:#c4c2ba;font-size:clamp(16px,2vw,19px)}
 
-/* blueprint figure */
-.plate{position:relative;aspect-ratio:1/1;width:100%;max-width:560px;margin-inline:auto;border:1px solid var(--line);background:linear-gradient(160deg,rgba(255,200,0,.05),transparent 55%)}
-.plate svg{position:absolute;inset:0;width:100%;height:100%}
-.plate .c{position:absolute;width:14px;height:14px;border:solid var(--signal);border-width:0}
-.c.tl{top:-1px;left:-1px;border-top-width:2px;border-left-width:2px}.c.tr{top:-1px;right:-1px;border-top-width:2px;border-right-width:2px}
-.c.bl{bottom:-1px;left:-1px;border-bottom-width:2px;border-left-width:2px}.c.br{bottom:-1px;right:-1px;border-bottom-width:2px;border-right-width:2px}
-.draw{fill:none;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2.4s var(--ease) forwards}
-.draw.d2{animation-delay:.3s}.draw.d3{animation-delay:.6s}.draw.d4{animation-delay:.9s}
-@keyframes draw{to{stroke-dashoffset:0}}
-.fade{opacity:0;animation:fade 1s 1.6s forwards}@keyframes fade{to{opacity:1}}
-.spin{transform-origin:280px 280px;animation:spin 40s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
-.plate-cap{position:absolute;inset:auto 18px 14px 18px;display:flex;justify-content:space-between;font-size:11px;color:var(--mute);letter-spacing:.1em}
-
-/* sections */
-section{padding:clamp(80px,11vw,150px) 0;border-top:1px solid var(--line2)}
-.head{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:clamp(40px,6vw,72px)}
-.kicker{font-size:13px;font-weight:700;color:var(--signal);margin-bottom:16px;display:flex;align-items:center;gap:12px}
-.kicker:before{content:"";width:24px;height:1px;background:var(--signal)}
-h2{font-family:var(--display);font-weight:800;font-size:clamp(38px,5.4vw,74px);line-height:1;letter-spacing:-.035em}
-html[lang=ar] h2{letter-spacing:0;line-height:1.2}
-.head p{color:#a9a79f;max-width:440px;justify-self:end}
+/* section titles */
+section{padding:clamp(60px,9vw,120px) 0}
+h2{font-family:var(--display);font-weight:800;font-size:clamp(34px,5vw,64px);line-height:1.05;letter-spacing:-.03em;margin-bottom:12px}
+html[lang=ar] h2{letter-spacing:0;line-height:1.3}
+.sub{color:var(--mute);max-width:520px;margin-bottom:clamp(32px,5vw,56px)}
+.bar{width:64px;height:4px;background:linear-gradient(90deg,var(--yellow),var(--red));border-radius:4px;margin-bottom:22px}
 
 /* services */
-.grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-inline-start:1px solid var(--line)}
-.svc{padding:30px 26px 34px;border-inline-end:1px solid var(--line);border-bottom:1px solid var(--line);min-height:250px;position:relative;transition:background .35s}
-.svc:before{content:"";position:absolute;top:0;inset-inline:0;height:2px;background:var(--signal);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}
-html[dir=rtl] .svc:before{transform-origin:right}
-.svc:hover{background:var(--ink2)}.svc:hover:before{transform:scaleX(1)}
-.svc svg{width:38px;height:38px;stroke:var(--signal);fill:none;stroke-width:1.5;margin-bottom:46px;display:block}
-.svc h3{font-family:var(--display);font-size:19px;font-weight:700;margin-bottom:10px;letter-spacing:-.01em}
-.svc p{font-size:14px;color:#9d9b94}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;perspective:1200px}
+.tilt{transform-style:preserve-3d;transition:transform .3s var(--ease),box-shadow .3s;will-change:transform}
+.svc{position:relative;padding:28px 24px 32px;min-height:240px;background:linear-gradient(160deg,#17171a,var(--card));border:1px solid var(--line);border-radius:18px;box-shadow:0 20px 40px -20px rgba(0,0,0,.9)}
+.svc:hover{border-color:rgba(255,200,0,.5);box-shadow:0 30px 60px -20px rgba(255,200,0,.18)}
+.svc svg{width:44px;height:44px;stroke:var(--yellow);fill:none;stroke-width:1.5;margin-bottom:38px;display:block;transform:translateZ(40px)}
+.svc h3{font-family:var(--display);font-size:19px;margin-bottom:8px;transform:translateZ(24px)}
+.svc p{font-size:14px;color:var(--mute);transform:translateZ(14px)}
 
-/* works */
-.works{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
-.side{display:grid;gap:16px}
-.work{position:relative;border:1px solid var(--line);background:var(--ink2);min-height:230px;overflow:hidden}
-.work.big{min-height:476px}
-.work svg{position:absolute;inset:0;width:100%;height:100%}
-.work .info{position:absolute;inset:auto 24px 22px;display:flex;flex-direction:column;gap:4px}
-.work small{font-size:12px;font-weight:700;color:var(--signal)}
-.work h3{font-family:var(--display);font-size:clamp(22px,2.4vw,30px);font-weight:700;letter-spacing:-.02em}
-.work .st{fill:none;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 2s var(--ease)}
-.work.in .st{stroke-dashoffset:0}
+/* social cards */
+.social{perspective:1400px}
+.card{position:relative;display:grid;grid-template-columns:minmax(180px,.8fr) 1.2fr;gap:clamp(20px,4vw,56px);align-items:center;padding:clamp(24px,4vw,56px);border-radius:28px;border:1px solid var(--line);overflow:hidden;
+  background:linear-gradient(150deg,#18181b,#0a0a0b);box-shadow:0 40px 80px -30px rgba(0,0,0,.95)}
+.card:before{content:"";position:absolute;width:70%;aspect-ratio:1;border-radius:50%;filter:blur(70px);opacity:.35;background:var(--glow);inset-block-start:-30%;inset-inline-start:-10%;pointer-events:none}
+.card.flip{grid-template-columns:1.2fr minmax(180px,.8fr)}
+.card.flip .ico{order:2}
+.card.yt{--glow:var(--red);--c:var(--red)} .card.fb{--glow:var(--yellow);--c:var(--yellow)} .card.wa{--glow:linear-gradient(135deg,var(--yellow),var(--red));--c:var(--yellow)}
+.card:hover{border-color:var(--c)}
+.ico{position:relative;transform-style:preserve-3d;display:grid;place-items:center}
+.ico img{width:min(100%,280px);aspect-ratio:1;object-fit:contain;transform:translateZ(70px);filter:drop-shadow(0 28px 30px rgba(0,0,0,.75));animation:float 7s ease-in-out infinite}
+.ico:after{content:"";position:absolute;inset:auto 15% 0;height:18px;border-radius:50%;background:rgba(0,0,0,.8);filter:blur(14px);transform:translateZ(-10px)}
+.txt{position:relative;transform:translateZ(30px)}
+.txt h3{font-family:var(--display);font-size:clamp(34px,5vw,60px);font-weight:800;letter-spacing:-.03em;line-height:1.05}
+.txt .name{margin-top:8px;font-size:clamp(16px,2vw,20px);font-weight:600;color:#d8d6ce;word-break:break-word}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;margin-top:28px;min-height:58px;padding:16px 34px;font:800 16px var(--body);border-radius:999px;background:var(--yellow);color:#000;box-shadow:0 14px 34px -10px rgba(255,200,0,.6);transition:transform .3s var(--ease),background .3s,box-shadow .3s}
+.btn:hover{transform:translateY(-4px) scale(1.03);background:#fff;box-shadow:0 20px 40px -10px rgba(255,200,0,.7)}
+.btn:active{transform:scale(.98)}
+.yt .btn{background:var(--red);color:#fff;box-shadow:0 14px 34px -10px rgba(232,50,30,.7)}
+.yt .btn:hover{background:#fff;color:var(--red)}
+.wa .btn{background:linear-gradient(100deg,var(--yellow),var(--red));color:#000}
+html[dir=rtl] .ext{display:inline-block;transform:scaleX(-1)}
+.social .card+.card{margin-top:clamp(24px,4vw,48px)}
 
-/* contact */
-.contact{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,90px);align-items:start}
-.contact .lead{margin-top:24px}
-.list{display:grid;border-top:1px solid var(--line)}
-.row{display:flex;align-items:center;gap:18px;padding:22px 4px;border-bottom:1px solid var(--line);transition:padding .3s var(--ease),background .3s}
-.row:hover{padding-inline-start:18px;background:var(--ink2)}
-.row small{display:block;font-size:12px;color:var(--mute)}
-.row strong{font-size:16px;font-weight:600;word-break:break-word}
-.row .ic{width:42px;height:42px;flex:none;border:1px solid var(--line);display:grid;place-items:center;color:var(--signal);font-weight:800;font-size:12px}
-.row .go{margin-inline-start:auto;color:var(--mute)}
-.row:hover .go{color:var(--signal)}
-html[dir=rtl] .row .go{transform:scaleX(-1)}
+/* phone */
+.phone{text-align:center;padding-bottom:clamp(80px,10vw,140px)}
+.phone a.num{display:block;font-family:var(--display);font-weight:900;font-size:clamp(34px,8vw,92px);letter-spacing:.02em;line-height:1.1;background:linear-gradient(100deg,var(--yellow),var(--red));-webkit-background-clip:text;background-clip:text;color:transparent;direction:ltr;margin-top:6px;transition:transform .3s var(--ease)}
+.phone a.num:hover{transform:scale(1.04)}
+.phone .btn{margin-top:30px}
 
-footer{border-top:1px solid var(--line);padding:32px 0 40px;color:var(--mute);font-size:12px}
-.foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
-
-@media(max-width:980px){
-  .hero-grid,.head,.works,.contact{grid-template-columns:1fr}
-  .head p{justify-self:start}
-  .grid{grid-template-columns:repeat(2,1fr)}
-  .links{display:none}
-  .plate{max-width:440px}
+@media(max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){
+  .card,.card.flip{grid-template-columns:1fr;text-align:center}
+  .card.flip .ico{order:0}
+  .ico img{width:min(70vw,260px)}
+  .btn{width:100%}
 }
-@media(max-width:560px){
-  .grid{grid-template-columns:1fr}.svc{min-height:0}.svc svg{margin-bottom:28px}
-  .brand span{display:none}.actions .btn{flex:1;justify-content:center}
-  .work.big{min-height:340px}
-}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.svc{min-height:0}.svc svg{margin-bottom:24px}}
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .draw,.work .st{animation:none;stroke-dashoffset:0;transition:none}.fade{animation:none;opacity:1}.spin{animation:none}
+  *,*:before,*:after{animation:none!important;transition:none!important}
+  .rv{opacity:1;transform:none}h1{clip-path:none}
 }
 </style>
 </head>
 <body>
-<header id="hd"><div class="wrap nav">
-  <a class="brand" href="#home" aria-label="NOUVURA">
-    <img src="logo.png" alt="NOUVURA" id="logo"><i class="mark"></i><span>NOUVURA</span>
-  </a>
-  <nav class="links" aria-label="Menu">
-    <a href="#services" data-i="navServices">Services</a>
-    <a href="#works" data-i="navWorks">Créations</a>
-    <a href="#contact" data-i="navContact">Contact</a>
-  </nav>
-  <div class="tools"><div class="lang" role="group" aria-label="Langue">
-    <button class="on" data-lang="fr">FR</button><button data-lang="ar">AR</button><button data-lang="en">EN</button>
-  </div></div>
-</div></header>
+<div class="light" aria-hidden="true"></div>
+<div class="lang" role="group" aria-label="Langue">
+  <button class="on" data-lang="fr">FR</button><button data-lang="ar">AR</button><button data-lang="en">EN</button>
+</div>
 
 <main>
-<section class="hero" id="home" style="border:0"><div class="wrap hero-grid">
-  <div>
-    <div class="tag" data-i="eyebrow">Studio créatif &amp; communication visuelle</div>
-    <h1 id="h1">Nou<span>vura</span></h1>
-    <p class="lead" data-i="heroCopy">Nous transformons les idées en identités visuelles, expériences digitales et contenus animés conçus pour attirer l’attention.</p>
-    <div class="actions">
-      <a class="btn fill" href="#services"><span data-i="explore">Explorer le studio</span><span class="arrow">↓</span></a>
-      <a class="btn" href="https://youtube.com/@nouvura" target="_blank" rel="noopener">YouTube <span class="ext">↗</span></a>
-    </div>
+<!-- 1. LOGO · 2. NOM · 3. DESCRIPTION -->
+<header class="hero" id="home"><div class="wrap">
+  <div class="stage" id="stage">
+    <i class="glow"></i><i class="ring r1"></i><i class="ring r2"></i>
+    <img src="logo.png" alt="NOUVURA" width="600" height="600">
   </div>
-  <div class="plate" aria-hidden="true">
-    <i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i>
-    <svg viewBox="0 0 560 560">
-      <g stroke="rgba(239,236,228,.18)" stroke-width="1">
-        <line x1="280" y1="24" x2="280" y2="536"/><line x1="24" y1="280" x2="536" y2="280"/>
-      </g>
-      <g class="spin"><circle cx="280" cy="280" r="214" fill="none" stroke="rgba(255,200,0,.35)" stroke-dasharray="3 9"/></g>
-      <circle class="draw" pathLength="1" cx="280" cy="280" r="170" stroke="#efece4" stroke-width="1.2"/>
-      <circle class="draw d2" pathLength="1" cx="280" cy="280" r="110" stroke="#ff6a1a" stroke-width="1.6"/>
-      <rect class="draw d3" pathLength="1" x="190" y="190" width="180" height="180" stroke="#ffc800" stroke-width="1.6" transform="rotate(45 280 280)"/>
-      <path class="draw d4" pathLength="1" d="M110 110 L450 450 M450 110 L110 450" stroke="#f0391f" stroke-width="1"/>
-      <g class="fade" stroke="rgba(239,236,228,.55)" stroke-width="1" fill="none">
-        <path d="M110 500h340M110 492v16M450 492v16"/><path d="M520 110v340M512 110h16M512 450h16"/>
-      </g>
-      <g class="fade" fill="#efece4" font-family="Manrope,sans-serif" font-size="11" letter-spacing="1.5">
-        <text x="280" y="494" text-anchor="middle">340</text>
-        <text x="500" y="284" text-anchor="middle" transform="rotate(90 500 280)">340</text>
-      </g>
-      <circle class="fade" cx="280" cy="280" r="5" fill="#ffc800"/>
-    </svg>
-    <div class="plate-cap"><span>GRAPHIC · MOTION · DIGITAL · CNC</span></div>
-  </div>
-</div></section>
+  <h1 id="h1">Nouvura</h1>
+  <p class="eyebrow" data-i="eyebrow">Studio créatif &amp; communication visuelle</p>
+  <p class="lead" data-i="heroCopy">Nous transformons les idées en identités visuelles, expériences digitales et contenus animés conçus pour attirer l’attention.</p>
+</div></header>
 
+<!-- 4. SERVICES -->
 <section id="services"><div class="wrap">
-  <div class="head">
-    <div><div class="kicker" data-i="k1">Expertise</div><h2 data-i="servicesTitle">Ce que nous créons.</h2></div>
-    <p data-i="servicesDesc">Une approche hybride entre design, technologie et fabrication pour donner une forme forte aux marques.</p>
-  </div>
+  <div class="rv"><div class="bar"></div><h2 data-i="servicesTitle">Ce que nous créons.</h2>
+  <p class="sub" data-i="servicesDesc">Une approche hybride entre design, technologie et fabrication pour donner une forme forte aux marques.</p></div>
   <div class="grid">
-    <article class="svc"><svg viewBox="0 0 40 40"><path d="M6 34 26 8l8 6-20 26z"/><path d="M26 8l-2-4M6 34l-2 3"/></svg><h3 data-i="s1">Design graphique</h3><p data-i="p1">Identités visuelles, affiches, supports publicitaires et systèmes graphiques.</p></article>
-    <article class="svc"><svg viewBox="0 0 40 40"><rect x="5" y="9" width="30" height="22" rx="2"/><path d="M17 15v10l8-5z"/></svg><h3 data-i="s2">Motion &amp; vidéo</h3><p data-i="p2">Motion design, montage et animations courtes pour donner du mouvement aux idées.</p></article>
-    <article class="svc"><svg viewBox="0 0 40 40"><rect x="5" y="7" width="30" height="26" rx="2"/><path d="M5 14h30M11 10.5h.1M15 10.5h.1"/></svg><h3 data-i="s3">Web &amp; UI/UX</h3><p data-i="p3">Sites modernes, interfaces, landing pages et expériences digitales responsives.</p></article>
-    <article class="svc"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="6"/><path d="M20 4v8M20 28v8M4 20h8M28 20h8"/></svg><h3 data-i="s4">Laser &amp; CNC</h3><p data-i="p4">Découpe, gravure et fabrication numérique pour signalétique et communication.</p></article>
-    <article class="svc"><svg viewBox="0 0 40 40"><path d="M5 26v-6l4-8h18l5 8h3v6z"/><circle cx="12" cy="29" r="3.5"/><circle cx="27" cy="29" r="3.5"/></svg><h3 data-i="s5">Habillage véhicules</h3><p data-i="p5">Covering et marquage de voitures, utilitaires et camions.</p></article>
-    <article class="svc"><svg viewBox="0 0 40 40"><path d="M6 10h28v17H18l-7 6v-6H6z"/></svg><h3 data-i="s6">Communication</h3><p data-i="p6">Contenus et visuels pensés pour les réseaux sociaux et campagnes publicitaires.</p></article>
-    <article class="svc"><svg viewBox="0 0 40 40"><path d="M6 34V6M6 34h28"/><rect x="11" y="20" width="6" height="14"/><rect x="21" y="12" width="6" height="22"/><rect x="31" y="24" width="3" height="10"/></svg><h3 data-i="s7">Infographie</h3><p data-i="p7">Visualisation d’informations, compositions techniques et contenus pédagogiques.</p></article>
-    <article class="svc"><svg viewBox="0 0 40 40"><rect x="6" y="6" width="28" height="28"/><path d="M20 12v16M12 20h16"/></svg><h3 data-i="s8">Sur mesure</h3><p data-i="p8">Une solution construite autour de votre projet, de votre support et de votre objectif.</p></article>
+    <article class="svc tilt rv"><svg viewBox="0 0 40 40"><path d="M6 34 26 8l8 6-20 26z"/><path d="M26 8l-2-4M6 34l-2 3"/></svg><h3 data-i="s1">Design graphique</h3><p data-i="p1">Identités visuelles, affiches, supports publicitaires et systèmes graphiques.</p></article>
+    <article class="svc tilt rv" style="--d:.06s"><svg viewBox="0 0 40 40"><rect x="5" y="9" width="30" height="22" rx="2"/><path d="M17 15v10l8-5z"/></svg><h3 data-i="s2">Motion &amp; vidéo</h3><p data-i="p2">Motion design, montage et animations courtes pour donner du mouvement aux idées.</p></article>
+    <article class="svc tilt rv" style="--d:.12s"><svg viewBox="0 0 40 40"><rect x="5" y="7" width="30" height="26" rx="2"/><path d="M5 14h30M11 10.5h.1M15 10.5h.1"/></svg><h3 data-i="s3">Web &amp; UI/UX</h3><p data-i="p3">Sites modernes, interfaces, landing pages et expériences digitales responsives.</p></article>
+    <article class="svc tilt rv" style="--d:.18s"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="6"/><path d="M20 4v8M20 28v8M4 20h8M28 20h8"/></svg><h3 data-i="s4">Laser &amp; CNC</h3><p data-i="p4">Découpe, gravure et fabrication numérique pour signalétique et communication.</p></article>
+    <article class="svc tilt rv"><svg viewBox="0 0 40 40"><path d="M5 26v-6l4-8h18l5 8h3v6z"/><circle cx="12" cy="29" r="3.5"/><circle cx="27" cy="29" r="3.5"/></svg><h3 data-i="s5">Habillage véhicules</h3><p data-i="p5">Covering et marquage de voitures, utilitaires et camions.</p></article>
+    <article class="svc tilt rv" style="--d:.06s"><svg viewBox="0 0 40 40"><path d="M6 10h28v17H18l-7 6v-6H6z"/></svg><h3 data-i="s6">Communication</h3><p data-i="p6">Contenus et visuels pensés pour les réseaux sociaux et campagnes publicitaires.</p></article>
+    <article class="svc tilt rv" style="--d:.12s"><svg viewBox="0 0 40 40"><path d="M6 34V6M6 34h28"/><rect x="11" y="20" width="6" height="14"/><rect x="21" y="12" width="6" height="22"/><rect x="31" y="24" width="3" height="10"/></svg><h3 data-i="s7">Infographie</h3><p data-i="p7">Visualisation d’informations, compositions techniques et contenus pédagogiques.</p></article>
+    <article class="svc tilt rv" style="--d:.18s"><svg viewBox="0 0 40 40"><rect x="6" y="6" width="28" height="28"/><path d="M20 12v16M12 20h16"/></svg><h3 data-i="s8">Sur mesure</h3><p data-i="p8">Une solution construite autour de votre projet, de votre support et de votre objectif.</p></article>
   </div>
 </div></section>
 
-<section id="works"><div class="wrap">
-  <div class="head">
-    <div><div class="kicker" data-i="k2">Réalisations</div><h2 data-i="worksTitle">L’image en mouvement.</h2></div>
-    <p data-i="worksDesc">Des compositions graphiques génératives et des interfaces animées pour une présence digitale distinctive.</p>
-  </div>
-  <div class="works">
-    <div class="work big"><svg viewBox="0 0 500 480" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-      <circle class="st" pathLength="1" cx="250" cy="210" r="150" stroke="#ffc800" stroke-width="1.2"/>
-      <circle class="st" pathLength="1" cx="250" cy="210" r="100" stroke="#ff6a1a" stroke-width="2"/>
-      <rect class="st" pathLength="1" x="170" y="130" width="160" height="160" stroke="#efece4" stroke-width="1" opacity=".6"/>
-      <path class="st" pathLength="1" d="M60 210h380M250 40v340" stroke="#f0391f" stroke-width="1"/></svg>
-      <div class="info"><small data-i="t1">Système visuel</small><h3 data-i="w1">Identité générative</h3></div></div>
-    <div class="side">
-      <div class="work"><svg viewBox="0 0 400 230" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-        <path class="st" pathLength="1" d="M20 150C90 10 140 190 210 80S330 20 380 130" stroke="#ffc800" stroke-width="2"/>
-        <path class="st" pathLength="1" d="M20 100C100 190 150 20 240 110S340 170 380 60" stroke="#f0391f" stroke-width="1.2"/></svg>
-        <div class="info"><small data-i="t2">Motion</small><h3 data-i="w2">Motion graphics</h3></div></div>
-      <div class="work"><svg viewBox="0 0 400 230" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-        <rect class="st" pathLength="1" x="90" y="28" width="220" height="130" rx="8" stroke="#efece4" stroke-width="1.2" opacity=".6"/>
-        <path class="st" pathLength="1" d="M90 58h220M120 88h80M120 108h120" stroke="#ffc800" stroke-width="2"/>
-        <circle class="st" pathLength="1" cx="268" cy="108" r="22" stroke="#ff6a1a" stroke-width="2"/></svg>
-        <div class="info"><small data-i="t3">Digital</small><h3 data-i="w3">Web &amp; interface</h3></div></div>
-    </div>
-  </div>
+<!-- 5. YOUTUBE · 6. FACEBOOK · 7. WHATSAPP -->
+<section class="social" id="social"><div class="wrap">
+  <article class="card yt tilt rv">
+    <div class="ico"><img src="YouTubeicon.png" alt="YouTube" loading="lazy"></div>
+    <div class="txt"><h3>YouTube</h3><p class="name">@nouvura</p>
+      <a class="btn" href="https://youtube.com/@nouvura" target="_blank" rel="noopener">YouTube <span class="ext">↗</span></a></div>
+  </article>
+  <article class="card fb flip tilt rv">
+    <div class="ico"><img src="file_0000000009f071f79eaa3f2fd9abc0ac.png" alt="Facebook" loading="lazy"></div>
+    <div class="txt"><h3>Facebook</h3><p class="name">Nouvura</p>
+      <a class="btn" href="https://www.facebook.com/profile.php?id=61594110335379" target="_blank" rel="noopener">Facebook <span class="ext">↗</span></a></div>
+  </article>
+  <article class="card wa tilt rv">
+    <div class="ico"><img src="WhatsAppicon.png" alt="WhatsApp" loading="lazy"></div>
+    <div class="txt"><h3>WhatsApp</h3><p class="name" dir="ltr">0564 62 82 60</p>
+      <a class="btn" href="https://wa.me/213564628260" target="_blank" rel="noopener">WhatsApp <span class="ext">↗</span></a></div>
+  </article>
 </div></section>
 
-<section id="contact"><div class="wrap contact">
-  <div>
-    <div class="kicker" data-i="k3">Contact</div>
-    <h2 data-i="contactTitle">Parlons de votre prochaine idée.</h2>
-    <p class="lead" data-i="contactCopy">Un projet graphique, digital, vidéo ou de fabrication ? Nouvura est prêt à lui donner une forme.</p>
-    <div class="actions"><a class="btn fill" href="https://wa.me/213564628260" target="_blank" rel="noopener">WhatsApp <span class="ext">↗</span></a></div>
-  </div>
-  <div class="list">
-    <a class="row" href="https://youtube.com/@nouvura" target="_blank" rel="noopener"><span class="ic">YT</span><div><small>YouTube</small><strong>@nouvura</strong></div><span class="go">↗</span></a>
-    <a class="row" href="https://www.facebook.com/profile.php?id=61594110335379" target="_blank" rel="noopener"><span class="ic">f</span><div><small>Facebook</small><strong>Nouvura</strong></div><span class="go">↗</span></a>
-    <a class="row" href="https://wa.me/213564628260" target="_blank" rel="noopener"><span class="ic">WA</span><div><small>WhatsApp</small><strong dir="ltr">0564 62 82 60</strong></div><span class="go">↗</span></a>
-    <a class="row" href="tel:+213564628260"><span class="ic">Tel</span><div><small data-i="tel">Téléphone</small><strong dir="ltr">0564 62 82 60</strong></div><span class="go">↗</span></a>
-    <a class="row" href="mailto:whaletailcompany@gmail.com"><span class="ic">@</span><div><small>Email</small><strong>whaletailcompany@gmail.com</strong></div><span class="go">↗</span></a>
-  </div>
+<!-- 8. TÉLÉPHONE -->
+<section class="phone" id="phone"><div class="wrap rv">
+  <div class="bar" style="margin-inline:auto"></div>
+  <h2 data-i="tel">Téléphone</h2>
+  <a class="num" href="tel:+213564628260">0564 62 82 60</a>
 </div></section>
 </main>
-
-<footer><div class="wrap foot"><span>© 2026 NOUVURA — Creative Studio</span><span data-i="loc">Algérie · Graphisme · Motion · Digital</span></div></footer>
 
 <script>
 (function(){
   var T={
-    fr:{navServices:"Services",navWorks:"Créations",navContact:"Contact",eyebrow:"Studio créatif & communication visuelle",heroCopy:"Nous transformons les idées en identités visuelles, expériences digitales et contenus animés conçus pour attirer l’attention.",explore:"Explorer le studio",k1:"Expertise",k2:"Réalisations",k3:"Contact",servicesTitle:"Ce que nous créons.",servicesDesc:"Une approche hybride entre design, technologie et fabrication pour donner une forme forte aux marques.",s1:"Design graphique",p1:"Identités visuelles, affiches, supports publicitaires et systèmes graphiques.",s2:"Motion & vidéo",p2:"Motion design, montage et animations courtes pour donner du mouvement aux idées.",s3:"Web & UI/UX",p3:"Sites modernes, interfaces, landing pages et expériences digitales responsives.",s4:"Laser & CNC",p4:"Découpe, gravure et fabrication numérique pour signalétique et communication.",s5:"Habillage véhicules",p5:"Covering et marquage de voitures, utilitaires et camions.",s6:"Communication",p6:"Contenus et visuels pensés pour les réseaux sociaux et campagnes publicitaires.",s7:"Infographie",p7:"Visualisation d’informations, compositions techniques et contenus pédagogiques.",s8:"Sur mesure",p8:"Une solution construite autour de votre projet, de votre support et de votre objectif.",worksTitle:"L’image en mouvement.",worksDesc:"Des compositions graphiques génératives et des interfaces animées pour une présence digitale distinctive.",t1:"Système visuel",t2:"Motion",t3:"Digital",w1:"Identité générative",w2:"Motion graphics",w3:"Web & interface",contactTitle:"Parlons de votre prochaine idée.",contactCopy:"Un projet graphique, digital, vidéo ou de fabrication ? Nouvura est prêt à lui donner une forme.",tel:"Téléphone",loc:"Algérie · Graphisme · Motion · Digital"},
-    ar:{navServices:"الخدمات",navWorks:"الأعمال",navContact:"اتصل بنا",eyebrow:"استوديو إبداعي واتصال بصري",heroCopy:"نحوّل الأفكار إلى هويات بصرية وتجارب رقمية ومحتوى متحرك مصمم لجذب الانتباه.",explore:"استكشف الاستوديو",k1:"خبراتنا",k2:"أعمالنا",k3:"تواصل معنا",servicesTitle:"ماذا نصنع.",servicesDesc:"مقاربة تجمع بين التصميم والتكنولوجيا والتصنيع لمنح العلامات التجارية حضورًا قويًا.",s1:"التصميم الجرافيكي",p1:"هويات بصرية وملصقات ومواد إعلانية وأنظمة تصميم.",s2:"الموشن والفيديو",p2:"موشن جرافيك ومونتاج وحركات قصيرة لإضفاء الحياة على الأفكار.",s3:"الويب و UI/UX",p3:"مواقع حديثة وواجهات وتجارب رقمية متجاوبة.",s4:"الليزر و CNC",p4:"قص وحفر وتصنيع رقمي للافتات والاتصال البصري.",s5:"تغليف المركبات",p5:"تغليف ووسم السيارات والمركبات والشاحنات.",s6:"الاتصال والإشهار",p6:"محتوى بصري مخصص للشبكات الاجتماعية والحملات الإعلانية.",s7:"الإنفوغراف",p7:"تصوير المعلومات والتكوينات التقنية والمحتوى التعليمي.",s8:"حلول مخصصة",p8:"حل مصمم حسب مشروعك ووسيطك وهدفك.",worksTitle:"الصورة في حركة.",worksDesc:"تكوينات بصرية مولدة برمجيًا وواجهات متحركة لحضور رقمي مختلف.",t1:"نظام بصري",t2:"موشن",t3:"رقمي",w1:"هوية مولدة",w2:"موشن جرافيك",w3:"ويب وواجهة",contactTitle:"لنتحدث عن فكرتك القادمة.",contactCopy:"مشروع تصميم أو ويب أو فيديو أو تصنيع؟ Nouvura جاهز لمنحه شكلاً قويًا.",tel:"الهاتف",loc:"الجزائر · تصميم · موشن · رقمي"},
-    en:{navServices:"Services",navWorks:"Work",navContact:"Contact",eyebrow:"Creative studio & visual communication",heroCopy:"We turn ideas into visual identities, digital experiences and motion content designed to capture attention.",explore:"Explore the studio",k1:"Expertise",k2:"Selected work",k3:"Contact",servicesTitle:"What we create.",servicesDesc:"A hybrid approach combining design, technology and fabrication to give brands a strong visual form.",s1:"Graphic design",p1:"Visual identities, posters, advertising materials and graphic systems.",s2:"Motion & video",p2:"Motion design, editing and short animations that bring ideas to life.",s3:"Web & UI/UX",p3:"Modern websites, interfaces, landing pages and responsive digital experiences.",s4:"Laser & CNC",p4:"Digital cutting, engraving and fabrication for signage and communication.",s5:"Vehicle branding",p5:"Wrapping and branding for cars, vans and trucks.",s6:"Communication",p6:"Visual content designed for social media and advertising campaigns.",s7:"Infographics",p7:"Information visualization, technical compositions and educational content.",s8:"Custom",p8:"A solution built around your project, medium and objective.",worksTitle:"Image in motion.",worksDesc:"Generative visual compositions and animated interfaces for a distinctive digital presence.",t1:"Visual system",t2:"Motion",t3:"Digital",w1:"Generative identity",w2:"Motion graphics",w3:"Web & interface",contactTitle:"Let’s discuss your next idea.",contactCopy:"A graphic, digital, video or fabrication project? Nouvura is ready to shape it.",tel:"Phone",loc:"Algeria · Graphic · Motion · Digital"}
+    fr:{eyebrow:"Studio créatif & communication visuelle",heroCopy:"Nous transformons les idées en identités visuelles, expériences digitales et contenus animés conçus pour attirer l’attention.",servicesTitle:"Ce que nous créons.",servicesDesc:"Une approche hybride entre design, technologie et fabrication pour donner une forme forte aux marques.",s1:"Design graphique",p1:"Identités visuelles, affiches, supports publicitaires et systèmes graphiques.",s2:"Motion & vidéo",p2:"Motion design, montage et animations courtes pour donner du mouvement aux idées.",s3:"Web & UI/UX",p3:"Sites modernes, interfaces, landing pages et expériences digitales responsives.",s4:"Laser & CNC",p4:"Découpe, gravure et fabrication numérique pour signalétique et communication.",s5:"Habillage véhicules",p5:"Covering et marquage de voitures, utilitaires et camions.",s6:"Communication",p6:"Contenus et visuels pensés pour les réseaux sociaux et campagnes publicitaires.",s7:"Infographie",p7:"Visualisation d’informations, compositions techniques et contenus pédagogiques.",s8:"Sur mesure",p8:"Une solution construite autour de votre projet, de votre support et de votre objectif.",tel:"Téléphone"},
+    ar:{eyebrow:"استوديو إبداعي واتصال بصري",heroCopy:"نحوّل الأفكار إلى هويات بصرية وتجارب رقمية ومحتوى متحرك مصمم لجذب الانتباه.",servicesTitle:"ماذا نصنع.",servicesDesc:"مقاربة تجمع بين التصميم والتكنولوجيا والتصنيع لمنح العلامات التجارية حضورًا قويًا.",s1:"التصميم الجرافيكي",p1:"هويات بصرية وملصقات ومواد إعلانية وأنظمة تصميم.",s2:"الموشن والفيديو",p2:"موشن جرافيك ومونتاج وحركات قصيرة لإضفاء الحياة على الأفكار.",s3:"الويب و UI/UX",p3:"مواقع حديثة وواجهات وتجارب رقمية متجاوبة.",s4:"الليزر و CNC",p4:"قص وحفر وتصنيع رقمي للافتات والاتصال البصري.",s5:"تغليف المركبات",p5:"تغليف ووسم السيارات والمركبات والشاحنات.",s6:"الاتصال والإشهار",p6:"محتوى بصري مخصص للشبكات الاجتماعية والحملات الإعلانية.",s7:"الإنفوغراف",p7:"تصوير المعلومات والتكوينات التقنية والمحتوى التعليمي.",s8:"حلول مخصصة",p8:"حل مصمم حسب مشروعك ووسيطك وهدفك.",tel:"الهاتف"},
+    en:{eyebrow:"Creative studio & visual communication",heroCopy:"We turn ideas into visual identities, digital experiences and motion content designed to capture attention.",servicesTitle:"What we create.",servicesDesc:"A hybrid approach combining design, technology and fabrication to give brands a strong visual form.",s1:"Graphic design",p1:"Visual identities, posters, advertising materials and graphic systems.",s2:"Motion & video",p2:"Motion design, editing and short animations that bring ideas to life.",s3:"Web & UI/UX",p3:"Modern websites, interfaces, landing pages and responsive digital experiences.",s4:"Laser & CNC",p4:"Digital cutting, engraving and fabrication for signage and communication.",s5:"Vehicle branding",p5:"Wrapping and branding for cars, vans and trucks.",s6:"Communication",p6:"Visual content designed for social media and advertising campaigns.",s7:"Infographics",p7:"Information visualization, technical compositions and educational content.",s8:"Custom",p8:"A solution built around your project, medium and objective.",tel:"Phone"}
   };
-  var H1={fr:["Nou","vura"],en:["Nou","vura"],ar:["نوفورا",""]};
-  var doc=document.documentElement, btns=document.querySelectorAll("[data-lang]");
+  var NAME={fr:"Nouvura",en:"Nouvura",ar:"نوفورا"};
+  var doc=document.documentElement,btns=document.querySelectorAll("[data-lang]");
   function setLang(l){
-    doc.lang=l; doc.dir=l==="ar"?"rtl":"ltr";
-    document.querySelectorAll("[data-i]").forEach(function(el){var v=T[l][el.dataset.i]; if(v!==undefined) el.textContent=v;});
-    var h=document.getElementById("h1"); h.textContent=H1[l][0]; if(H1[l][1]){var s=document.createElement("span");s.textContent=H1[l][1];h.appendChild(s);}
+    doc.lang=l;doc.dir=l==="ar"?"rtl":"ltr";
+    document.querySelectorAll("[data-i]").forEach(function(el){var v=T[l][el.dataset.i];if(v!==undefined)el.textContent=v});
+    document.getElementById("h1").textContent=NAME[l];
     btns.forEach(function(b){b.classList.toggle("on",b.dataset.lang===l)});
     try{localStorage.setItem("nv-lang",l)}catch(e){}
   }
   btns.forEach(function(b){b.addEventListener("click",function(){setLang(b.dataset.lang)})});
-  var saved=null; try{saved=localStorage.getItem("nv-lang")}catch(e){}
-  if(saved&&T[saved]&&saved!=="fr") setLang(saved);
+  var saved=null;try{saved=localStorage.getItem("nv-lang")}catch(e){}
+  if(saved&&T[saved]&&saved!=="fr")setLang(saved);
 
-  // logo fallback if logo.png is missing
-  var logo=document.getElementById("logo");
-  logo.addEventListener("error",function(){document.querySelector(".brand").classList.add("no-logo")});
-  if(logo.complete&&logo.naturalWidth===0) document.querySelector(".brand").classList.add("no-logo");
-
-  // header state
-  var hd=document.getElementById("hd");
-  function onScroll(){hd.classList.toggle("scrolled",window.scrollY>10)}
-  window.addEventListener("scroll",onScroll,{passive:true}); onScroll();
-
-  // draw work figures once when visible
-  var works=document.querySelectorAll(".work");
+  // scroll reveal
+  var rv=document.querySelectorAll(".rv");
   if("IntersectionObserver" in window){
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.3});
-    works.forEach(function(w){io.observe(w)});
-  } else works.forEach(function(w){w.classList.add("in")});
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.15});
+    rv.forEach(function(el){io.observe(el)});
+  }else rv.forEach(function(el){el.classList.add("in")});
+
+  // 3D tilt on pointer devices only
+  var fine=window.matchMedia("(hover:hover) and (pointer:fine)").matches;
+  var calm=window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+  if(fine&&!calm){
+    document.querySelectorAll(".tilt").forEach(function(el){
+      var raf=0;
+      el.addEventListener("pointermove",function(e){
+        var r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+        cancelAnimationFrame(raf);
+        raf=requestAnimationFrame(function(){el.style.transform="perspective(1000px) rotateX("+(-y*8)+"deg) rotateY("+(x*10)+"deg) translateZ(0)"});
+      });
+      el.addEventListener("pointerleave",function(){cancelAnimationFrame(raf);el.style.transform=""});
+    });
+    // hero parallax
+    var st=document.getElementById("stage"),hero=document.getElementById("home");
+    hero.addEventListener("pointermove",function(e){
+      var x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;
+      st.style.transform="rotateY("+(x*18)+"deg) rotateX("+(-y*14)+"deg)";
+    });
+    hero.addEventListener("pointerleave",function(){st.style.transform=""});
+  }
 })();
 </script>
 </body>
